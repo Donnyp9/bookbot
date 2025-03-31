@@ -1,4 +1,10 @@
-full_path = "books/frankenstein.txt"
+import sys
+
+if len(sys.argv) < 2:
+    print("Usage: python3 main.py <path_to_book>")
+    sys.exit(1)
+
+full_path = sys.argv[1]
 
 def get_book_text(full_path):
         with open(full_path) as f:
@@ -17,9 +23,8 @@ def seperate_words():
             split_words = file_contents.split()
             for i in split_words:
                 words_count += 1
-            print(f"{words_count} words found in the document") 
+            print(f"Found {words_count} total words") 
 
-seperate_words()
 
 def character_counter():
 
@@ -33,6 +38,35 @@ def character_counter():
         else: 
             counter[character] += 1
             
-    print(counter)
+    return counter
 
-character_counter()
+
+def sorter(counter):
+
+    result = []
+
+    
+    for char, count in counter.items(): 
+        if char.isalpha():
+            result.append({"character": char, "count": count})
+
+    result.sort(reverse=True, key=lambda x: x["count"])
+    return result
+
+print("============ BOOKBOT ============")
+print(f"Analyzing book found at {full_path}...")
+print("----------- Word Count ----------")
+seperate_words()
+print("--------- Character Count -------")
+counter = character_counter()
+sorted_result = sorter(counter)
+for item in sorted_result:
+        print(f"{item['character']}: {item['count']}")
+
+
+
+
+
+
+
+
